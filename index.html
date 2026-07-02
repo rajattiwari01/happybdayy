@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#faf5f1" />
+  <title>Happy Birthday, Khushi Jain</title>
+  <meta name="description" content="An elegant, interactive birthday page for Khushi Jain — gallery, carousel, riddles, a wish-bot and more." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Outfit:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="glow glow--1"></span>
+    <span class="glow glow--2"></span>
+    <span class="glow glow--3"></span>
+  </div>
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- ============ INTRO ============ -->
+  <div class="intro" id="intro">
+    <div class="intro__inner">
+      <p class="intro__kicker">for someone rather wonderful</p>
+      <button class="monogram" id="giftBtn" aria-label="Open">
+        <span class="monogram__ring"></span>
+        <span class="monogram__k">K</span>
+      </button>
+      <p class="intro__hint">tap to begin</p>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="crown reveal" aria-hidden="true">♛</div>
+    <p class="hero__kicker reveal">Happy&nbsp;Birthday</p>
+    <h1 class="hero__name gold reveal">Khushi <em>Jain</em></h1>
+    <div class="hero__rule reveal"><span></span>✦&nbsp;tonight's&nbsp;star&nbsp;✦<span></span></div>
+    <p class="hero__type reveal"><span id="typed"></span><span class="cursor">|</span></p>
+    <a href="#gallery" class="hero__scroll reveal" aria-label="Scroll down"><span class="hero__scrollline"></span></a>
+  </header>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery-section" id="gallery">
+    <div class="sec-head reveal">
+      <p class="eyebrow">the year in frames</p>
+      <h2 class="sec-title">Moments of you</h2>
+    </div>
+    <div class="gallery">
+      <figure class="shot shot--tall reveal tilt"><img src="assets/photos/1.jpg" alt="Khushi" loading="lazy" /><figcaption>golden afternoons</figcaption></figure>
+      <figure class="shot reveal tilt"><img src="assets/photos/2.jpg" alt="Khushi" loading="lazy" /><figcaption>colour everywhere</figcaption></figure>
+      <figure class="shot shot--feature reveal tilt"><img src="assets/photos/3.jpg" alt="Khushi" loading="lazy" /><figcaption>the birthday girl</figcaption></figure>
+      <figure class="shot reveal tilt"><img src="assets/photos/4.jpg" alt="Khushi" loading="lazy" /><figcaption>somewhere higher</figcaption></figure>
+      <figure class="shot shot--tall reveal tilt"><img src="assets/photos/5.jpg" alt="Khushi" loading="lazy" /><figcaption>city lights &amp; december</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ============ CAROUSEL + RIDDLES + PER-IMAGE SONG ============ -->
+  <section class="carousel-section" id="carousel">
+    <div class="sec-head reveal">
+      <p class="eyebrow">swipe through · guess the photo</p>
+      <h2 class="sec-title">The riddle reel</h2>
+      <p class="sec-note">Each frame hides a silly riddle — and its own song. <span class="mono">// tap reveal</span></p>
+    </div>
+
+    <div class="reel reveal" id="reel">
+      <button class="reel__nav reel__prev" id="reelPrev" aria-label="Previous">‹</button>
+      <div class="reel__viewport">
+        <div class="reel__track" id="reelTrack"><!-- slides injected by JS --></div>
+      </div>
+      <button class="reel__nav reel__next" id="reelNext" aria-label="Next">›</button>
+      <div class="reel__dots" id="reelDots"></div>
+    </div>
+  </section>
+
+  <!-- ============ RED CARPET ============ -->
+  <section class="carpet-section reveal" id="carpet">
+    <div class="sec-head">
+      <p class="eyebrow">arrivals · flashes ready</p>
+      <h2 class="sec-title">The red carpet</h2>
+      <p class="sec-note">Step out, superstar — <button class="linkbtn" id="walkBtn">let me give you a walk ▶</button></p>
+    </div>
+    <div class="carpet">
+      <div class="carpet__ropes"><i></i><i></i><i></i></div>
+      <div class="carpet__runner">
+        <div class="carpet__star"><img src="assets/photos/3.jpg" alt="Khushi" /></div>
+      </div>
+      <div class="carpet__ropes"><i></i><i></i><i></i></div>
+      <p class="carpet__caption" id="carpetCaption">Khushi Jain has arrived ✦</p>
+    </div>
+  </section>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <!-- ============ STAR WISHES (AI voices) ============ -->
+  <section class="stars-section reveal" id="starwishes">
+    <div class="sec-head">
+      <p class="eyebrow">the guest list · sound on 🔊</p>
+      <h2 class="sec-title">Star wishes</h2>
+      <p class="sec-note">Six voices dropped by to wish you. Tap one to hear it — or <button class="linkbtn" id="playAllWishes">play the whole montage ▶</button></p>
+    </div>
+    <p class="wish-caption" id="wishCaption"></p>
+    <div class="stars-grid" id="starsGrid"></div>
+  </section>
+
+  <!-- ============ KHUSHI'S MIX ============ -->
+  <section class="mix-section reveal" id="mix">
+    <div class="sec-head">
+      <p class="eyebrow">press play · streams on youtube</p>
+      <h2 class="sec-title">Khushi's mix</h2>
+      <p class="sec-note">A little collection made for you — tap any track, or <button class="linkbtn" id="shuffleBtn">surprise me ▶</button></p>
+    </div>
+    <div class="mix">
+      <div class="mix__cover"><img src="assets/photos/1.jpg" alt="" /><span>♫</span></div>
+      <div class="mix__list">
+        <p class="mix__group">Taylor's corner</p>
+        <a class="track" target="_blank" rel="noopener" data-title="Lover" href="https://www.youtube.com/results?search_query=Taylor+Swift+Lover"><span class="track__no">01</span><span class="track__t">Lover</span><span class="track__a">Taylor Swift</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Enchanted" href="https://www.youtube.com/results?search_query=Taylor+Swift+Enchanted"><span class="track__no">02</span><span class="track__t">Enchanted</span><span class="track__a">Taylor Swift</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Paper Rings" href="https://www.youtube.com/results?search_query=Taylor+Swift+Paper+Rings"><span class="track__no">03</span><span class="track__t">Paper Rings</span><span class="track__a">Taylor Swift</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="You Are In Love" href="https://www.youtube.com/results?search_query=Taylor+Swift+You+Are+In+Love"><span class="track__no">04</span><span class="track__t">You Are In Love</span><span class="track__a">Taylor Swift</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Delicate" href="https://www.youtube.com/results?search_query=Taylor+Swift+Delicate"><span class="track__no">05</span><span class="track__t">Delicate</span><span class="track__a">Taylor Swift</span><span class="track__p">▶</span></a>
+
+        <p class="mix__group">English &amp; indie</p>
+        <a class="track" target="_blank" rel="noopener" data-title="The Night We Met" href="https://www.youtube.com/results?search_query=Lord+Huron+The+Night+We+Met"><span class="track__no">06</span><span class="track__t">The Night We Met</span><span class="track__a">Lord Huron</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Sofia" href="https://www.youtube.com/results?search_query=Clairo+Sofia"><span class="track__no">07</span><span class="track__t">Sofia</span><span class="track__a">Clairo</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Best Part" href="https://www.youtube.com/results?search_query=Daniel+Caesar+Best+Part+ft+HER"><span class="track__no">08</span><span class="track__t">Best Part</span><span class="track__a">Daniel Caesar, H.E.R.</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Put Your Records On" href="https://www.youtube.com/results?search_query=Corinne+Bailey+Rae+Put+Your+Records+On"><span class="track__no">09</span><span class="track__t">Put Your Records On</span><span class="track__a">Corinne Bailey Rae</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Sweater Weather" href="https://www.youtube.com/results?search_query=The+Neighbourhood+Sweater+Weather"><span class="track__no">10</span><span class="track__t">Sweater Weather</span><span class="track__a">The Neighbourhood</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Ophelia" href="https://www.youtube.com/results?search_query=The+Lumineers+Ophelia"><span class="track__no">11</span><span class="track__t">Ophelia</span><span class="track__a">The Lumineers</span><span class="track__p">▶</span></a>
+
+        <p class="mix__group">Hindi &amp; desi-indie</p>
+        <a class="track" target="_blank" rel="noopener" data-title="cold/mess" href="https://www.youtube.com/results?search_query=Prateek+Kuhad+cold+mess"><span class="track__no">12</span><span class="track__t">cold/mess</span><span class="track__a">Prateek Kuhad</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Kho Gaye Hum Kahan" href="https://www.youtube.com/results?search_query=Kho+Gaye+Hum+Kahan+Prateek+Kuhad+Jasleen+Royal"><span class="track__no">13</span><span class="track__t">Kho Gaye Hum Kahan</span><span class="track__a">Prateek Kuhad, Jasleen Royal</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Baarishein" href="https://www.youtube.com/results?search_query=Anuv+Jain+Baarishein"><span class="track__no">14</span><span class="track__t">Baarishein</span><span class="track__a">Anuv Jain</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Husn" href="https://www.youtube.com/results?search_query=Anuv+Jain+Husn"><span class="track__no">15</span><span class="track__t">Husn</span><span class="track__a">Anuv Jain</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Choo Lo" href="https://www.youtube.com/results?search_query=The+Local+Train+Choo+Lo"><span class="track__no">16</span><span class="track__t">Choo Lo</span><span class="track__a">The Local Train</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Kesariya" href="https://www.youtube.com/results?search_query=Kesariya+Arijit+Singh+Brahmastra"><span class="track__no">17</span><span class="track__t">Kesariya</span><span class="track__a">Arijit Singh</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Shayad" href="https://www.youtube.com/results?search_query=Shayad+Arijit+Singh+Love+Aaj+Kal"><span class="track__no">18</span><span class="track__t">Shayad</span><span class="track__a">Arijit Singh</span><span class="track__p">▶</span></a>
+        <a class="track" target="_blank" rel="noopener" data-title="Iktara" href="https://www.youtube.com/results?search_query=Iktara+Wake+Up+Sid+Kavita+Seth"><span class="track__no">19</span><span class="track__t">Iktara</span><span class="track__a">Kavita Seth</span><span class="track__p">▶</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WISH-BOT (geeky) ============ -->
+  <section class="bot-section reveal" id="bot">
+    <div class="sec-head">
+      <p class="eyebrow">system.exe</p>
+      <h2 class="sec-title">The wish-bot</h2>
+    </div>
+    <div class="bot">
+      <div class="robot" id="robot" aria-hidden="true">
+        <span class="robot__antenna"></span>
+        <div class="robot__head">
+          <span class="robot__eye robot__eye--l"></span>
+          <span class="robot__eye robot__eye--r"></span>
+          <span class="robot__mouth"></span>
+        </div>
+        <div class="robot__body"><span class="robot__led"></span></div>
+      </div>
+      <div class="terminal">
+        <div class="terminal__bar"><span></span><span></span><span></span><em>khushi@birthday: ~</em></div>
+        <pre class="terminal__body"><code id="botOut"></code><span class="term-cursor">▊</span></pre>
+        <button class="btn btn--mono" id="botBtn">./wish --again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUOTES ============ -->
+  <section class="quotes-section reveal">
+    <div class="quotes">
+      <p class="quotes__mark">“</p>
+      <blockquote id="quoteText"></blockquote>
+      <cite id="quoteBy"></cite>
+      <button class="quotes__btn" id="quoteBtn" aria-label="Another quote">another →</button>
+    </div>
+  </section>
+
+  <!-- ============ VIDEO ============ -->
+  <section class="video-section reveal">
+    <div class="sec-head">
+      <p class="eyebrow">press play</p>
+      <h2 class="sec-title">A little clip</h2>
+      <p class="sec-note">Drop a clip at <span class="mono">assets/video.mp4</span> and it appears here.</p>
+    </div>
+    <div class="video">
+      <video id="bdayVideo" controls playsinline poster="assets/photos/3.jpg" preload="none">
+        <source src="assets/video.mp4" type="video/mp4" />
+      </video>
+      <p class="video__fallback" id="videoFallback">No video yet — save one as <span class="mono">assets/video.mp4</span>.</p>
+    </div>
+  </section>
+
+  <!-- ============ WISH / CANDLE ============ -->
+  <section class="wish-section reveal">
+    <div class="sec-head">
+      <p class="eyebrow">a small ritual</p>
+      <h2 class="sec-title">Make a wish</h2>
+    </div>
+    <div class="candle" id="cake" role="button" tabindex="0" aria-label="Blow out the candle">
+      <span class="candle__glow"></span>
+      <span class="flame" id="flame"></span>
+      <span class="candle__stick"></span>
+      <span class="candle__base"></span>
+    </div>
+    <p class="wish__msg" id="cakeMsg">Tap the flame, and keep the wish to yourself.</p>
+  </section>
+
+  <!-- ============ WISHES ============ -->
+  <section class="wishes-section reveal">
+    <div class="sec-head">
+      <p class="eyebrow">for the year ahead</p>
+      <h2 class="sec-title">Four quiet wishes</h2>
+    </div>
+    <div class="wishes">
+      <article class="card reveal"><span class="card__no">01</span><h3>Health</h3><p>May every day treat you as gently as you treat everyone around you.</p></article>
+      <article class="card reveal"><span class="card__no">02</span><h3>Ambition</h3><p>Chase the wild ideas. The world is quietly waiting to be surprised by you.</p></article>
+      <article class="card reveal"><span class="card__no">03</span><h3>Love</h3><p>To be surrounded by people who see your light and never stop rooting for you.</p></article>
+      <article class="card reveal"><span class="card__no">04</span><h3>Wonder</h3><p>A year threaded with small, unhurried moments that feel a little like magic.</p></article>
+    </div>
+  </section>
+
+  <!-- ============ LETTER ============ -->
+  <section class="letter-section reveal">
+    <article class="letter">
+      <p class="letter__hi">Dear Khushi,</p>
+      <p>Another trip around the sun — and somehow you keep getting brighter. There's a quiet kind of warmth in the way you move through the world, and it makes the people around you better for it.</p>
+      <p>Here's to your laugh, your kindness, and the dreams you're brave enough to chase. May this year hand you every good thing you've been hoping for, and a few beautiful surprises you never saw coming.</p>
+      <p>Keep going exactly as you are, Khushi Jain. The best chapters of your story are still being written.</p>
+      <p class="letter__sign">With love, always.</p>
+    </article>
+  </section>
+
+  <!-- ============ FINALE ============ -->
+  <footer class="finale reveal">
+    <p class="eyebrow">and so</p>
+    <h2 class="finale__title">Here's to you, Khushi.</h2>
+    <p class="finale__sub">Another year of being wonderfully, quietly extraordinary.</p>
+    <button class="btn" id="finaleBtn">Celebrate</button>
+    <p class="credit">made with care · MMXXVI</p>
+  </footer>
+
+  <!-- ============ DRAWER ============ -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <button class="drawer__close" id="drawerClose" aria-label="Close">✕</button>
+    <p class="eyebrow">little notes</p>
+    <h3 class="drawer__title">Reasons you're the best</h3>
+    <ul class="drawer__list">
+      <li>Your laugh could power a small city. ⚡</li>
+      <li>You show up — every single time it matters.</li>
+      <li>Somehow you make ordinary days feel like an occasion.</li>
+      <li>Effortlessly the most photogenic person in every group photo.</li>
+      <li>Your kindness has no off-switch.</li>
+      <li>The world is simply more fun with you in it.</li>
+    </ul>
+    <p class="drawer__foot">— close this and go enjoy your day ♡</p>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <audio id="bgm" loop preload="none" src="assets/song.mp3"></audio>
+  <audio id="sfx" preload="none"></audio>
+
+  <button class="fab notes" id="drawerBtn" aria-label="Open notes">✦</button>
+  <button class="fab music" id="musicBtn" aria-label="Play music">♪</button>
+  <button class="fab up" id="toTop" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
